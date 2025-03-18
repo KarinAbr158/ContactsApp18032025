@@ -9,21 +9,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHolder> {
-    Context mContext;
-    Database database = Database.getInstance(mContext);
-    NotesDAO noteDao = database.noteDao();
+    private Context mContext;
+    private List<Notes> noteList;  // Store notes in a list
+    private NotesDAO noteDao;
+
+    public ContactAdapter(Context mContext) {
+        this.mContext = mContext;
+        Database database = Database.getInstance(mContext);
+        this.noteDao = database.noteDao();
+        this.noteList = noteDao.getAllNotes(); // Load data once
+    }
     @NonNull
     @Override
     public ContactAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater.from(mContext).inflate(R.layout.contact_item, viewGroup, false);
-
-        return null;
+        View view = LayoutInflater.from(mContext).inflate(R.layout.contact_item, parent, false);
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContactAdapter.MyViewHolder holder, int position) {
-
+        Notes note = noteList.get(position);
+        holder.et1.setText(note.getFirstName());
+        holder.et2.setText(note.getLastName());
+        holder.et3.setText(note.getAddress());
+        holder.et4.setText(note.getPhone());
     }
 
     @Override
@@ -31,8 +43,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
         return noteDao.getAllNotes().size();
     }
 
-    public ContactAdapter(Context mContext) {
-        this.mContext = mContext;
+    public void updateData(List<Notes> newNotes) {
+        this.noteList = newNotes;
+        notifyDataSetChanged(); // Refresh RecyclerView
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
