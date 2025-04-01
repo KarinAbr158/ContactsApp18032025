@@ -57,15 +57,17 @@ public class MainActivity extends AppCompatActivity {
                 if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || address.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
+                else{
+                    Notes temp = new Notes(name, phone, email, address);
+                    noteDao.insert(temp);
+                    adapter.updateData(noteDao.getAllNotes());et1.setText("");
+                    et2.setText("");
+                    et3.setText("");
+                    et4.setText("");
 
-                Notes temp = new Notes(name, phone, email, address);
-                noteDao.insert(temp);
-                adapter.updateData(noteDao.getAllNotes());et1.setText("");
-                et2.setText("");
-                et3.setText("");
-                et4.setText("");
+                    Toast.makeText(MainActivity.this, "Contact added!", Toast.LENGTH_SHORT).show();
+                }
 
-                Toast.makeText(MainActivity.this, "Contact added!", Toast.LENGTH_SHORT).show();
             }
         });
     }

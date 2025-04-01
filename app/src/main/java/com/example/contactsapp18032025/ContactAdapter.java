@@ -45,7 +45,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.MyViewHo
 
     public void updateData(List<Notes> newNotes) {
         this.noteList = newNotes;
-        notifyDataSetChanged(); // Refresh RecyclerView
+        notifyDataSetChanged();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
